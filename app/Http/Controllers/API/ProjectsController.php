@@ -73,16 +73,38 @@ class ProjectsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProjectsRequest $request, Project $projects)
+    public function update(Request $request, Project $projects): \Illuminate\Http\JsonResponse
     {
-        //
+        // Validatsiya
+        $request->validate([
+            'student_id' => 'required|exists:students,id',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'source_link' => 'nullable|url',
+            'demo_link' => 'nullable|url',
+        ]);
+
+        // Route model binding orqali kiritilgan `$projects` obyektini yangilash
+        $projects->student_id = $request->student_id;
+        $projects->name = $request->name;
+        $projects->description = $request->description;
+        $projects->source_link = $request->source_link;
+        $projects->demo_link = $request->demo_link;
+
+        // Saqlash
+        $projects->save();
+
+        // JSON formatida javob qaytarish
+        return response()->json($projects);
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $projects)
+    public function destroy(Project $projects): void
     {
-        //
+        $projects->delete();
     }
+
 }

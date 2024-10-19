@@ -75,10 +75,32 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateStudentRequest $request, Student $student)
+    public function update(Request $request, Student $student): \Illuminate\Http\JsonResponse
     {
-        //
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'nt_id' => 'required|integer',
+            'photo' => 'required|string|max:255',
+            'profession' => 'required|string|max:255',
+            'phone' => 'required|string|max:50',
+            'biography' => 'nullable|string',
+        ]);
+
+        $student = Student::find($student->id);
+        $student->first_name = $request->first_name;
+        $student->last_name = $request->last_name;
+        $student->nt_id = $request->nt_id;
+        $student->photo = $request->photo;
+        $student->profession = $request->profession;
+        $student->phone = $request->phone;
+        $student->biography = $request->biography;
+
+        $student->save();
+
+        return response()->json($student);
     }
+
 
     /**
      * Remove the specified resource from storage.
