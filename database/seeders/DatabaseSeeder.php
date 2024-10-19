@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Education;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,13 +18,16 @@ class DatabaseSeeder extends Seeder
 
       $this->call([
           StudentSeeder::class,
-          ExperienceSeeder::class,
           ProjectsSeeder::class,
-          LessonsSeeder::class,
-          HardSkillSeeder::class,
-          SoftSkillSeeder::class,
-          CvSeeder::class,
-          LinkSeeder::class
+          EducationSeeder::class,
+          LanguageSeeder::class,
+          LanguageStudentSeeder::class,
+          ExperienceSeeder::class,
+          SocialNetworkSeeder::class,
+          SocialNetworkStudentSeeder::class,
+          SkillSeeder::class,
+          SkillStudentSeeder::class
+
       ]);
     }
 }

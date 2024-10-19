@@ -17,10 +17,11 @@ class ExperienceFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->company(),
-            'description' => $this->faker->paragraph(),
-            'start_data' => $this->faker->dateTimeBetween('-10 years', 'now'),
-            'end_data' => $this->faker->dateTimeBetween('now', '+10 years'),
+            'student_id' => \App\Models\Student::factory(), // Tasodifiy student bilan bog'lash
+            'name' => $this->faker->company, // Tasodifiy kompaniya nomi (string)
+            'description' => $this->faker->paragraph, // Tasodifiy tavsif (text)
+            'start_data' => $this->faker->dateTimeBetween('-5 years', 'now'), // Tasodifiy boshlanish sanasi (timestamp)
+            'end_data' => $this->faker->dateTimeBetween('now', '+5 years'), // Tasodifiy tugash sanasi (timestamp)
         ];
     }
 }

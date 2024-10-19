@@ -2,17 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Project;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ProjectsSeeder extends Seeder
+class LanguageSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Project::factory(10)->create();
+        \App\Models\Language::factory(10)->create();
     }
 }

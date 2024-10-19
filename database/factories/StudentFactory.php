@@ -17,13 +17,13 @@ class StudentFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_name' => $this->faker->firstName(),
-            'last_name' => $this->faker->lastName(),
-            'nt_id' => $this->faker->unique()->numberBetween(1000, 9999),
-            'photo' => $this->faker->imageUrl(640, 480, 'people'),
-            'profession' => $this->faker->word(),
-            'phone' => $this->faker->phoneNumber(),
-            'biography' => $this->faker->paragraph(),
+            'first_name' => $this->faker->firstName(), // Fake first name
+            'last_name' => $this->faker->lastName(), // Fake last name
+            'nt_id' => $this->faker->randomNumber(), // Fake nt_id (random number)
+            'photo' => $this->faker->imageUrl(640, 480, 'people'), // Fake photo URL
+            'profession' => $this->faker->jobTitle(), // Fake profession (job title)
+            'phone' => $this->faker->phoneNumber(), // Fake phone number
+            'biography' => implode(' ', $this->faker->words(4)), // 4 ta so'zdan iborat fake biography
         ];
     }
 }
