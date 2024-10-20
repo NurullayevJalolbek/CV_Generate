@@ -53,7 +53,7 @@ class StudentController extends Controller
         $student->biography = $request->biography;
 
         $student->save();
-        return response()->json($student);
+        return response()->json($student, 201);
     }
 
     /**
@@ -61,7 +61,7 @@ class StudentController extends Controller
      */
     public function show(Student $student): \Illuminate\Http\JsonResponse
     {
-        return response()->json($student);
+        return response()->json($student, 201);
     }
 
     /**
@@ -87,7 +87,6 @@ class StudentController extends Controller
             'biography' => 'nullable|string',
         ]);
 
-        $student = Student::find($student->id);
         $student->first_name = $request->first_name;
         $student->last_name = $request->last_name;
         $student->nt_id = $request->nt_id;
@@ -98,15 +97,19 @@ class StudentController extends Controller
 
         $student->save();
 
-        return response()->json($student);
+        return response()->json($student, 201);
     }
+
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Student $student): void
+    public function destroy(Student $student): \Illuminate\Http\JsonResponse
     {
-        Student::destroy($student->id);
+        $student->delete();
+
+        return response()->json(null, 204);
     }
+
 }
