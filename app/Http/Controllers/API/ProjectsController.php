@@ -55,11 +55,11 @@ class ProjectsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Project $projects): \Illuminate\Http\JsonResponse
+    public function show(Project $project): \Illuminate\Http\JsonResponse
     {
-        // Mavjud loyiha ob'ektini JSON formatida qaytarish
-        return response()->json($projects);
+        return response()->json($project);
     }
+
 
 
     /**
@@ -73,9 +73,10 @@ class ProjectsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $projects): \Illuminate\Http\JsonResponse
+    public function update(Request $request, $id): \Illuminate\Http\JsonResponse
     {
-        // Validatsiya
+        $project = Project::findOrFail($id);
+
         $request->validate([
             'student_id' => 'required|exists:students,id',
             'name' => 'required|string|max:255',
@@ -84,27 +85,28 @@ class ProjectsController extends Controller
             'demo_link' => 'nullable|url',
         ]);
 
-        // Route model binding orqali kiritilgan `$projects` obyektini yangilash
-        $projects->student_id = $request->student_id;
-        $projects->name = $request->name;
-        $projects->description = $request->description;
-        $projects->source_link = $request->source_link;
-        $projects->demo_link = $request->demo_link;
+        $project->student_id = $request->student_id;
+        $project->name = $request->name;
+        $project->description = $request->description;
+        $project->source_link = $request->source_link;
+        $project->demo_link = $request->demo_link;
 
-        // Saqlash
-        $projects->save();
+        $project->save();
 
-        // JSON formatida javob qaytarish
-        return response()->json($projects);
+        return response()->json($project);
     }
+
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $projects): void
+    public function destroy(Project $project): \Illuminate\Http\JsonResponse
     {
-        $projects->delete();
+        $project->delete();
+
+        return response()->json(null, 204);
     }
+
 
 }
