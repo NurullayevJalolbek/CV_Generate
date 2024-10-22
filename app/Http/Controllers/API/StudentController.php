@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      */
@@ -53,7 +55,10 @@ class StudentController extends Controller
         $student->biography = $request->biography;
 
         $student->save();
-        return response()->json($student, 204);
+        return response()->json([
+            'message' => 'Student created successfully',
+            'token' => $student->createToken($student->first_name)->plainTextToken
+        ]);
     }
 
     /**

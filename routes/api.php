@@ -1,35 +1,49 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\EducationController;
+use App\Http\Controllers\API\ExperienceController;
+use App\Http\Controllers\API\LanguageController;
+use App\Http\Controllers\API\LanguageStudentController;
+use App\Http\Controllers\API\ProjectsController;
+use App\Http\Controllers\API\SkillController;
+use App\Http\Controllers\API\SkillStudentController;
+use App\Http\Controllers\API\SocialNetworkController;
+use App\Http\Controllers\API\SocialNetworkStudentController;
+use App\Http\Controllers\API\StudentController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::resource('students', \App\Http\Controllers\API\StudentController::class);
 
-Route::resource('experiences', \App\Http\Controllers\API\ExperienceController::class);
+Route::resource('students', StudentController::class);
 
-Route::resource('educations', \App\Http\Controllers\API\EducationController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::resource('students', StudentController::class);
 
-Route::resource('projects', \App\Http\Controllers\API\ProjectsController::class);
+    Route::resource('experiences', ExperienceController::class);
 
-Route::apiResource('languages', \App\Http\Controllers\API\LanguageController::class);
+    Route::resource('educations', EducationController::class);
 
-Route::apiResource('socialNetworks', \App\Http\Controllers\API\SocialNetworkController::class);
+    Route::resource('projects', ProjectsController::class);
 
-Route::apiResource('skills', \App\Http\Controllers\API\SkillController::class);
+    Route::apiResource('languages', LanguageController::class);
 
-Route::delete('SocialNetworkStudents/{socialNetworkId}/{studentId}', [\App\Http\Controllers\API\SocialNetworkStudentController::class, 'destroy']);
-Route::get('SocialNetworkStudents', [\App\Http\Controllers\API\SocialNetworkStudentController::class, 'index']);
+    Route::apiResource('socialNetworks', SocialNetworkController::class);
 
-Route::delete('SkillStudent/{StudentId}/{SkillId}', [\App\Http\Controllers\API\SkillStudentController::class, 'destroy']);
-Route::get('SkillStudent', [\App\Http\Controllers\API\SkillStudentController::class, 'index']);
+    Route::apiResource('skills', SkillController::class);
 
 
-Route::delete('languageStudents/{studentId}/{languageId}', [\App\Http\Controllers\API\LanguageStudentController::class, 'destroy']);
-Route::get('languageStudents', [\App\Http\Controllers\API\LanguageStudentController::class, 'index']);
+    Route::post('SocialNetworkStudents/{ID}/socialNetwork/attach', [SocialNetworkStudentController::class, 'attachSocialNetwork']);
+
+    Route::delete('SocialNetworkStudents/{ID}/socialNetwork/detach', [SocialNetworkStudentController::class, 'detachSocialNetwork']);
+
+    Route::delete('SkillStudent/{StudentId}/{SkillId}', [SkillStudentController::class, 'detachSkillStudent']);
+    Route::post('SkillStudent', [SkillStudentController::class, 'attachSkillStudent']);
 
 
+    Route::delete('languageStudents/{studentId}/{languageId}', [LanguageStudentController::class, 'detachLanguageStudent']);
+    Route::post('languageStudents', [LanguageStudentController::class, 'attachLanguageStudent']);
 
+});
 
 
 

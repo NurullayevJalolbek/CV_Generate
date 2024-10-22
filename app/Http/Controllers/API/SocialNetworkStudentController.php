@@ -1,68 +1,50 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\SocialNetwork;
+use App\Models\Student;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class SocialNetworkStudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request): \Illuminate\Http\JsonResponse
+    public function attachSocialNetwork(Request $request, $studentID): JsonResponse
     {
+        $student = Student::findOrFail($studentID);
+
+        $social = SocialNetwork::query()->findOrFail($request->get('social_network_id'));
+
+        $username = $request->get('username');
+
+        $student->socialNetworks()->attach($social->id, ['username' => $username]);
 
         return response()->json([
-            DB::table('social_network_students')->get()
-        ], 201);
-
-
-    }
-
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
-    {
-        $socialNetworkStudent = DB::table('social_network_students')->insert([
-            'student_id' => $request->input('student_id'),
-            'social_network_id' => $request->input('social_network_id'),
-            'username' => $request->input('username'),
+            'message' => 'Success',
+            'status' => 'active',
+            'social' => $social,
+            'username' => $username
         ]);
-        return response()->json([$socialNetworkStudent], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+
+
+    public function detachSocialNetwork(Request $request, Student $student): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $socialNetworkId, string $studentId): \Illuminate\Http\JsonResponse
-    {
-        $deleted = DB::table('social_network_students')
-            ->where('social_network_id', $socialNetworkId)
-            ->where('student_id', $studentId)
-            ->delete();
+        $social = SocialNetwork::query()->find($request->get('social_network_id'));
 
 
-        return response()->json([$deleted], 204); // 404 Not Found
+        $username = $request->get('username');
+
+        $student->socialNetworks()->wherePivot('username', $username)->detach($social->id);
+
+        return response()->json([
+            'message' => 'Success',
+            'status' => 'detached',
+            'social' => $social,
+            'username' => $username
+        ]);
     }
 
 
