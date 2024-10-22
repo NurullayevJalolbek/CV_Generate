@@ -78,6 +78,7 @@ class StudentControllerTest extends TestCase
 
     public function test_update_a_validation_failed()
     {
+
         $student = Student::factory()->create();
 
         $response = $this->putJson('/api/students/' . $student->id, [

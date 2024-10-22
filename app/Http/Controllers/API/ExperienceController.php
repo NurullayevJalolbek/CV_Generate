@@ -71,16 +71,34 @@ class ExperienceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateExperienceRequest $request, Experience $experience)
+    public function update(Request $request, Experience $experience): \Illuminate\Http\JsonResponse
     {
-        //
+        $request->validate([
+            'student_id' => 'required|exists:students,id',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'start_data' => 'nullable|date',
+            'end_data' => 'nullable|date|after_or_equal:start_data',
+        ]);
+
+        $experience->student_id = $request->student_id;
+        $experience->name = $request->name;
+        $experience->description = $request->description;
+        $experience->start_data = $request->start_data;
+        $experience->end_data = $request->end_data;
+
+        $experience->save();
+
+        return response()->json($experience, 201);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Experience $experience)
+    public function destroy(Experience $experience): \Illuminate\Http\JsonResponse
     {
-        //
+        $experience->delete();
+
+        return response()->json(null, 204);
     }
 }

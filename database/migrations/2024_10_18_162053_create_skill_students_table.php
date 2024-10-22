@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -9,15 +10,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function destroy(int $studentId, int $skillId): \Illuminate\Http\JsonResponse
     {
-        Schema::create('skill_students', function (Blueprint $table) {
-            $table->id(); // ID (bigint primary key)
-            $table->foreignId('student_id')->constrained('students')->onDelete('cascade'); // foreign key to students table
-            $table->foreignId('skill_id')->constrained('skills')->onDelete('cascade'); // foreign key to skills table
-            $table->timestamps();
-        });
+        $deleted = DB::table('skill_students')
+            ->where('student_id', $studentId)
+            ->where('skill_id', $skillId)
+            ->delete();
+
+        return response()->json([$deleted], 404);
     }
+
 
     /**
      * Reverse the migrations.

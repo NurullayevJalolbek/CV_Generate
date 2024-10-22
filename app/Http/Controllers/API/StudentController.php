@@ -53,7 +53,7 @@ class StudentController extends Controller
         $student->biography = $request->biography;
 
         $student->save();
-        return response()->json($student, 201);
+        return response()->json($student, 204);
     }
 
     /**

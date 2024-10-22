@@ -26,6 +26,8 @@ services:
       - app-network
     expose:
       - 5432
+    ports:
+      - "2345:5432"
 
   pgadmin:
     image: dpage/pgadmin4
