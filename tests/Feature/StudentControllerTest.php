@@ -5,12 +5,22 @@ namespace Tests\Feature;
 use App\Models\Student;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class StudentControllerTest extends TestCase
 {
 
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Create a user and authenticate
+        $user = Student::factory()->create();
+        Sanctum::actingAs($user);
+    }
     /**
      * A basic feature test example.
      */
@@ -27,13 +37,12 @@ class StudentControllerTest extends TestCase
         ]);
 
         $response->assertStatus(201)
-            ->assertJson([
-                "first_name" => "nurullayev",
-                "last_name" => "Jalolbek",
-                "nt_id" => "19873",
-                "profession" => "nimadirlar",
-            ]);
+        ->assertJson([
+            "message" => "Student created successfully",
+            "token" => $response->json('token'),
+        ]);
     }
+
 
     public function test_create_a_student_validation_error_on_missing_fields(): void
     {
@@ -55,7 +64,7 @@ class StudentControllerTest extends TestCase
     {
         $student = Student::factory()->create();
 
-        $response = $this->putJson("/api/students/2", [
+        $response = $this->putJson("/api/students/{$student->id}", [
             "first_name" => $student->first_name,
             "last_name" => $student->last_name,
             "nt_id" => $student->nt_id,
@@ -66,13 +75,14 @@ class StudentControllerTest extends TestCase
         ]);
 
         $response->assertStatus(201)
-            ->assertJson([
-                "first_name" => $student->first_name,
-                "last_name" => $student->last_name,
-                "nt_id" => $student->nt_id,
-                "profession" => $student->profession,
-            ]);
+        ->assertJson([
+            "first_name" => $student->first_name,
+            "last_name" => $student->last_name,
+            "nt_id" => $student->nt_id,
+            "profession" => $student->profession,
+        ]);
     }
+
 
 
 

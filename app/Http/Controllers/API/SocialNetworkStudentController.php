@@ -12,6 +12,10 @@ class SocialNetworkStudentController extends Controller
 {
     public function attachSocialNetwork(Request $request, $studentID): JsonResponse
     {
+//        return response()->json([
+//            'studentID' => $studentID,
+//            'request'=>$request->get('social_network_id')
+//        ]);
         $student = Student::findOrFail($studentID);
 
         $social = SocialNetwork::query()->findOrFail($request->get('social_network_id'));
@@ -29,22 +33,20 @@ class SocialNetworkStudentController extends Controller
     }
 
 
-
-    public function detachSocialNetwork(Request $request, Student $student): JsonResponse
+    public function detachSocialNetwork(Request $request, Student $studentID, $social_network_id): JsonResponse
     {
-        $social = SocialNetwork::query()->find($request->get('social_network_id'));
+        $social = SocialNetwork::query()->find($social_network_id);
 
-
-        $username = $request->get('username');
-
-        $student->socialNetworks()->wherePivot('username', $username)->detach($social->id);
+        $studentID->socialNetworks()->detach($social->id);
 
         return response()->json([
             'message' => 'Success',
             'status' => 'detached',
             'social' => $social,
-            'username' => $username
+            'studentID' => $studentID->id
+
         ]);
+
     }
 
 

@@ -58,7 +58,7 @@ class StudentController extends Controller
         return response()->json([
             'message' => 'Student created successfully',
             'token' => $student->createToken($student->first_name)->plainTextToken
-        ]);
+        ], 201);
     }
 
     /**

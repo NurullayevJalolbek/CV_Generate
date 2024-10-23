@@ -46,8 +46,13 @@ class EducationController extends Controller
 
         $education->save();
 
-        return response()->json($education, 201);
+        return response()->json([
+            'message' => 'yaratildi',
+            'status' => 'success',
+            'data' => $education
+        ], 201);
     }
+
 
 
     /**
@@ -77,8 +82,11 @@ class EducationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): \Illuminate\Http\JsonResponse
     {
-        //
+        $education = Education::find($id);
+        $education->delete();
+
+        return response()->json(null, 204);
     }
 }

@@ -33,15 +33,22 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::post('SocialNetworkStudents/{ID}/socialNetwork/attach', [SocialNetworkStudentController::class, 'attachSocialNetwork']);
+    Route::delete('SocialNetworkStudents/{studentID}/social_network_id/{ID}', [SocialNetworkStudentController::class, 'detachSocialNetwork']);
 
-    Route::delete('SocialNetworkStudents/{ID}/socialNetwork/detach', [SocialNetworkStudentController::class, 'detachSocialNetwork']);
 
-    Route::delete('SkillStudent/{StudentId}/{SkillId}', [SkillStudentController::class, 'detachSkillStudent']);
     Route::post('SkillStudent', [SkillStudentController::class, 'attachSkillStudent']);
+    /*
+     * TODO: Delete SkillStudent
+     */
+    Route::delete('SkillStudent/studentID/{studentID}/skillID/{skillID}', [SkillStudentController::class, 'detachSkillStudent']);
 
 
-    Route::delete('languageStudents/{studentId}/{languageId}', [LanguageStudentController::class, 'detachLanguageStudent']);
     Route::post('languageStudents', [LanguageStudentController::class, 'attachLanguageStudent']);
+
+    /*
+     * TODO: Delete LanguageStudent
+     */
+    Route::delete('languageStudents/{studentId}/{languageId}', [LanguageStudentController::class, 'detachLanguageStudent']);
 
 });
 

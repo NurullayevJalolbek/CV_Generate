@@ -6,10 +6,20 @@ use App\Models\Project;
 use App\Models\Student;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class ProjectControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $student = Student::factory()->create();
+        Sanctum::actingAs($student);
+    }
     /**
      * A basic feature test example.
      */
