@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id(); // ID (bigint primary key)
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade'); // student_id (foreign key referencing students table)
             $table->string('name'); // name (string)
+            ///
             $table->text('description'); // description (text)
             $table->timestamp('start_data')->nullable(); // start_data (timestamp)
             $table->timestamp('end_data')->nullable(); // end_data (timestamp)
