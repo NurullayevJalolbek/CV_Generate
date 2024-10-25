@@ -15,7 +15,7 @@ services:
   postgres:
     image: postgres
     container_name: postgres
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
@@ -43,7 +43,7 @@ services:
     container_name: web
     image: nginx:alpine  # Use the Nginx image
     ports:
-      - "9000:80"  # Map port 8080 on the host to port 80 inside the container
+      - "80:80"  # Map port 8080 on the host to port 80 inside the container
     volumes:
       - ./:/var/www  # Mount the Laravel application directory-
       - ./nginx.conf:/etc/nginx/conf.d/default.conf  # Use our Nginx config

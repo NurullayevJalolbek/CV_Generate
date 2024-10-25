@@ -51,7 +51,9 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
+            set -e
             cd CV_Generate
+            git reset --hard HEAD
             git pull
             docker compose -f docker-compose.production.yml up --build -d
             docker exec os_app php artisan optimize
