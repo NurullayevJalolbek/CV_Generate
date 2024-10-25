@@ -20,6 +20,9 @@ class LanguageStudentController extends Controller
 
         $student->languages()->attach($languageId);
 
+
+
+
         return response()->json([
             'message' => 'Language attached successfully',
             'status' => 'success',
