@@ -56,4 +56,4 @@ jobs:
             git reset --hard HEAD
             git pull
             docker compose -f docker-compose.production.yaml up --build -d
-            docker exec os_app php artisan optimize
+            docker exec app php artisan optimize
