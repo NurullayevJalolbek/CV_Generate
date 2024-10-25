@@ -30,6 +30,21 @@ jobs:
           touch database/database.sqlite
       - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
         env:
-          DB_CONNECTION: mysql
-          DB_DATABASE: database/database.mysql
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
         run: php artisan test
+
+  deploy:
+    name: Deploy to DigitalOcean
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo secrets
+        run: echo ${{ secrets.HOST }} ${{ secrets.USERNAME }}
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: whoami
