@@ -50,12 +50,6 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd CV_Generate
-            # Git safe directory ni qo'shing
-            git config --global --add safe.directory /path/to/CV_Generate
-            # Git pull
             git pull
-            # Docker-compose ni yangilang va ishga tushiring
             docker compose -f docker-compose.production.yml up --build -d
-            # Docker konteyneriga kirib artisan optimize ni bajaring
             docker exec os_app php artisan optimize
-
